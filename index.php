@@ -28,6 +28,7 @@ switch($stage) {
 
     case 'gen_crl':
         list($returnValue,$errorText) = CA_generate_crl();
+        $S->assign('returnValue', $returnValue);
 
         printHeader(false);
 

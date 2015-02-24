@@ -51,10 +51,11 @@ switch ($stage) {
 case 'goaway':
     printHeader(false);
     print '<p><center><h1><font color="red">ACCESS DENIED!</font></h2></center>';
+    printFooter();
     break;
 
 case 'display':
-    printHeader(false);
+    printHeader('ca');
 
     $certCommonName = CA_cert_cname($serial);
     $certEmail = CA_cert_email($serial);

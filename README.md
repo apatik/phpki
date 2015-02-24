@@ -17,7 +17,7 @@ Main changes
 
 Planned changes
 ---------------
-* Fix CRL subsystem (I found this to not be operational, have not yet investigated)
+* Investigate adding support for Elliptic Curve Certificates
 
 System Preparation
 ---------------
@@ -41,7 +41,7 @@ Example Apache config to secure the site with OpenLDAP authentication, instead o
 
     <VirtualHost *:80>
         	ServerName phpki.company.com
-    	    ServerAlias phpki
+    		ServerAlias phpki
         	DocumentRoot /var/www/html/phpki
 
     	<Directory "/var/www/html/phpki">

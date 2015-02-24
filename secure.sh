@@ -18,27 +18,34 @@ software is 100% secure.
 
 EOM
 
-read -p "Enter the location of your PHPki password (i.e. /etc/phpkipasswd): " passwd_file
+echo -n "Use built-in user management [true]: "; read w
+userMgmt=${w:-"true"}
 
-echo
-
-if [ ! -f "$passwd_file" ]
+if [ "${userMgmt}" = "true" ]
 then
-    echo "The file you specified does not yet exist."
-    echo "Let's create it and add your first user."
+
+    read -p "Enter the location of your PHPki password (i.e. /etc/phpkipasswd): " passwd_file
+
     echo
-    read -p "Enter a user id: " user_id
 
-    echo "Creating the $user_id user account..."
+    if [ ! -f "$passwd_file" ]
+    then
+        echo "The file you specified does not yet exist."
+        echo "Let's create it and add your first user."
+        echo
+        read -p "Enter a user id: " user_id
 
-    htpasswd -c -m "$passwd_file" "$user_id" || exit
+        echo "Creating the $user_id user account..."
 
-    echo "Creating the administrator account..."
-	echo "See the README file for more information about the"
-	echo "'pkiadmin' user."
-    htpasswd -m "$passwd_file" 'pkiadmin' || exit
+        htpasswd -c -m "$passwd_file" "$user_id" || exit
+
+        echo "Creating the administrator account..."
+        echo "See the README file for more information about the"
+        echo "'pkiadmin' user."
+        htpasswd -m "$passwd_file" 'pkiadmin' || exit
+    fi
+
 fi
-
 echo
 
 if [ ! "${owner}_" = "root_" ]
@@ -61,17 +68,16 @@ echo -n "Enter the group ID your web server runs as [apache]: " ; read z
 echo
 echo "Enter the IP or subnet address [192.168.0.0/16] which will be allowed access"
 echo -n "to the user admin module in under ./admin: " ; read y
-echo -n "Use built-in user management [true]: "; read w
 
 user=${x:-apache}
 group=${z:-apache}
 subnet=${y:-'192.168.0.0/16'}
 subnet="${subnet} 127.0.0.1"
-userMgmt=${w:-true}
 
 echo "Working..."
 
-if ($w) {
+if [ "${userMgmt}" = "true" ]
+then
 
 for i in ./include
 do
@@ -97,7 +103,8 @@ Order Allow,Deny
 Allow from $subnet
 
 EOS
-}
+
+fi
 
 # Start with web server getting read-only access to everything.
 # Directories have sticky bits set.
