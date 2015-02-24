@@ -14,41 +14,48 @@ This application stores private keys within a sub-directory, making them
 potentially susceptible to compromise.  Extra care has been taken in the
 design of this application to protect the security of your certificates,
 on the condition that you INSTALL IT AS THE ROOT USER.  However, no
-software is 100% secure.  
+software is 100% secure.
 
 EOM
 
-read -p "Enter the location of your PHPki password (i.e. /etc/phpkipasswd): " passwd_file
+echo -n "Use built-in user management [true]: "; read w
+userMgmt=${w:-"true"}
 
-echo
-
-if [ ! -f "$passwd_file" ] 
+if [ "${userMgmt}" = "true" ]
 then
-    echo "The file you specified does not yet exist."
-    echo "Let's create it and add your first user."
+
+    read -p "Enter the location of your PHPki password (i.e. /etc/phpkipasswd): " passwd_file
+
     echo
-    read -p "Enter a user id: " user_id
 
-    echo "Creating the $user_id user account..."
+    if [ ! -f "$passwd_file" ]
+    then
+        echo "The file you specified does not yet exist."
+        echo "Let's create it and add your first user."
+        echo
+        read -p "Enter a user id: " user_id
 
-    htpasswd -c -m "$passwd_file" "$user_id" || exit
+        echo "Creating the $user_id user account..."
 
-    echo "Creating the administrator account..."
-	echo "See the README file for more information about the"
-	echo "'pkiadmin' user."
-    htpasswd -m "$passwd_file" 'pkiadmin' || exit
+        htpasswd -c -m "$passwd_file" "$user_id" || exit
+
+        echo "Creating the administrator account..."
+        echo "See the README file for more information about the"
+        echo "'pkiadmin' user."
+        htpasswd -m "$passwd_file" 'pkiadmin' || exit
+    fi
+
 fi
-
 echo
 
-if [ ! "${owner}_" = "root_" ] 
+if [ ! "${owner}_" = "root_" ]
 then
 	cat <<EOM
 YOU ARE NOT LOGGED ON AS ROOT!
 
 If you choose to proceed anyway, and you plan to make this application
 available over the Internet, you increase the risk of compromising the
-security of your certifcates and your server.  
+security of your certifcates and your server.
 
 This script may not run correctly if you are not the ROOT user.
 
@@ -69,10 +76,13 @@ subnet="${subnet} 127.0.0.1"
 
 echo "Working..."
 
+if [ "${userMgmt}" = "true" ]
+then
+
 for i in ./include
 do
 	echo "deny from all" >$i/.htaccess
-done 
+done
 
 cat <<EOS >> ./ca/.htaccess
 AuthName "Restricted Area"
@@ -83,7 +93,7 @@ SSLRequireSSL
 
 EOS
 
-cat <<EOS > ./admin/.htaccess 
+cat <<EOS > ./admin/.htaccess
 AuthName "Restricted Area"
 AuthType Basic
 AuthUserFile "$passwd_file"
@@ -94,10 +104,13 @@ Allow from $subnet
 
 EOS
 
+fi
+
 # Start with web server getting read-only access to everything.
 # Directories have sticky bits set.
 find .           -exec chown $owner:$group {} \;
 find . ! -type d -exec chmod 640 {} \;
 find .   -type d -exec chmod 3750 {} \;
+chmod 0770 templates_c;
 
 echo "Done."
