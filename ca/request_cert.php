@@ -94,8 +94,8 @@ switch ($form_stage) {
         if ($er)  {
             $S->assign('er',$er);
             $S->assign('warn',$warn);
-            printHeader();
-            $S->display('request_form_validate_error.tpl');
+            printHeader('ca');
+            $S->display('requestCert/requestCertValidationError.tpl');
             printFooter();
             break;
         }
@@ -119,13 +119,13 @@ switch ($form_stage) {
         }
         $S->assign('cert_usage', $cert_usage);
 
-        printHeader();
-        $S->display('request_form_confirm.tpl');
+        printHeader('ca');
+        $S->display('requestCert/requestCertConfirm.tpl');
         printFooter();
 
         # Save user's defaults
         $fp = fopen($user_cnf,'w');
-        $x = $S->fetch('user_defaults.tpl');
+        $x = $S->fetch('requestCert/userDefaults.tpl');
         fwrite($fp,$x);
         fclose($fp);
 
@@ -134,18 +134,17 @@ switch ($form_stage) {
     case 'final':
         if ($submit == "Yes!  Create and Download") {
             if (! $serial = CAdb_in($email,$common_name)) {
-                list($ret,$errtxt) = CA_create_cert($cert_type,$country, $province, $locality, $organization, $unit, $common_name, $email, $expiry, $passwd, $keysize,$dns_names,$ip_addr);
+                list($returnValue,$errorText) = CA_create_cert($cert_type,$country, $province, $locality, $organization, $unit, $common_name, $email, $expiry, $passwd, $keysize,$dns_names,$ip_addr);
 
-                if (! $ret) {
-                    printHeader();
-
-                    $S->display('request_form_error.tpl');
-
+                if (! $returnValue) {
+                    $S->assign('errorText',$errorText);
+                    printHeader('ca');
+                    $S->display('requestCert/requestCertError.tpl');
                     printFooter();
                     break;
                 }
                 else {
-                    $serial = $errtxt;
+                    $serial = $errorText;
                 }
             }
 
@@ -195,7 +194,7 @@ switch ($form_stage) {
         $S->assign('dns_names',htvar($dns_names));
         $S->assign('ip_addr',htvar($ip_addr));
 
-        printHeader();
-        $S->display('request_form.tpl');
+        printHeader('ca');
+        $S->display('requestCert/requestCert.tpl');
         printFooter();
 }

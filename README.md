@@ -11,25 +11,13 @@ Main changes
 
 * Changed hash algorithm from MD5 to SHA
 * Removed reliance on deprecated PHP functionality, allowing use of a modern version of PHP without a log full of warnings
+* Implemented Smarty templates to make the code much cleaner and easier to read
+* Removed the silly symlink nonsense in favor of a more streamlined approach
+* You can now use any authentication scheme that your webserver can use for Basic Auth - the most obvious being LDAP.
 
 Planned changes
 ---------------
-
-* Remove usage of symlinks.
-* Strip out built-in password support -- this can be implemented by the webserver (htaccess) or a bolt-on like SimpleSAMLphp
 * Fix CRL subsystem (I found this to not be operational, have not yet investigated)
-
-Changelog
----------------
-
-v1.0.0
-    Switched to semantic versioning
-    Changed hash algorithm from the now insecure SHA1 to SHA2
-    Fixed issue with the DNS / IP address boxes being filled with codes instead of the actual names / addresses
-    Moved all HTML to smarty templates for cleaner code / easier maintenance
-    Changed logic for checking the subjectAltNames to make it more in line with RFC 6125
-    Removed requirements for all parts of the DN to be specified (email, organizational unit, etc.). The only ones that are now required are common name and organization (and obviously email when issuing an email certificate). It is still recommended that you include as much of this info as possible, though.
-
 
 System Preparation
 ---------------
@@ -46,6 +34,37 @@ composer.phar install
 
 Additionally, you need to set your timezone in php.ini
 e.g. date.timezone = America/Chicago
+
+Example Apache config to secure the site with OpenLDAP authentication, instead of the built in user support
+(you will need to adjust the LDAP URL and Bind DN to mach your environment, of course):
+
+
+<VirtualHost *:80>
+	ServerName phpki.company.com
+	ServerAlias phpki
+	DocumentRoot /var/www/html/phpki
+
+	<Directory "/var/www/html/phpki">
+		AllowOverride None
+		Order allow,deny
+		Allow from all
+
+		AuthType Basic
+		AuthName "PHPki Access (LDAP)"
+		AuthBasicProvider ldap
+		AuthLDAPURL "ldap://192.168.1.1/OU=people,DC=company,DC=com?uid"
+		AuthLDAPBindDN "UID=apache,OU=services,DC=company,DC=com"
+		AuthLDAPBindPassword "SuperSecurePassword"
+		AuthzLDAPAuthoritative Off
+		require valid-user
+	</Directory>
+</VirtualHost>
+
+User credentials are sent in cleartext, so you are strongly encouraged to enable SSL (you do have a CA now, after all)
+
+
+PHPki has been tested to work on both Apache + mod_php and Nginx + PHPFPM, on both PHP versions 5.3 nd 5.5. While no guarantees are made, it should run on any modern-ish version of these programs, so don't sweat it.
+
 
 Original README (0.83) (some of this info is now outdated)
 ======================

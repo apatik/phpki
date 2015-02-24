@@ -289,13 +289,6 @@ EOS;
 
     exec(REQ . " -x509 -config $tmp_cnf -extensions root_ext -newkey rsa:$keysize -keyout $config[cakey] -out $config[cacert_pem] -passout pass:'$config[ca_pwd]' -days $days 2>&1");
 
-    # **** DISABLED *****
-    # It appears that both IE and Netscape accept PEM formatted root certificates
-    #
-    # Create a copy of the CA certificate in DER format.
-    #
-    #exec(X509 . " -in ca/$config[cacert_pem] -inform PEM -out ca/$config[cacert_der] -outform DER 2>&1");
-
     #
     # Generate the initial CRL.
     #
@@ -306,20 +299,6 @@ EOS;
     # Make a copy of the CRL in DER format.
     #
     exec(CRL . " -in $config[cacrl_pem] -out $config[cacrl_der] -inform PEM -outform DER");
-
-    #
-    # Clean up.
-    #
-    #if (! unlink("$store_dir/tmp/openssl.cnf")) print "Can't unlink $store_dir/tmp/openssl.cnf";
-
-    #
-    # Step aside and let the users in (create index.php files).
-    #
-    #if (! unlink('index.php')) print "Can't unlink index.php";
-    #if (! unlink('setup.php')) print "Can't unlink setup.php";;
-    #if (! unlink('ca/index.php')) print "Can't unlink ca/index.php";
-    #if (! symlink('main.php','index.php')) print "Can't symlink main.php";
-    #if (! symlink('main.php','ca/index.php')) print "Can't symlink ca/main.php";;
 
     ?>
     <center>

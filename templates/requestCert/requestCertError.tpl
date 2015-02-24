@@ -6,7 +6,7 @@
     <blockquote>
         <h3>Debug Info:</h3>
         <pre>
-            {$errtxt}
+            {$errorText}
         </pre>
     </blockquote>
     <p>

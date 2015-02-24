@@ -61,13 +61,17 @@ echo -n "Enter the group ID your web server runs as [apache]: " ; read z
 echo
 echo "Enter the IP or subnet address [192.168.0.0/16] which will be allowed access"
 echo -n "to the user admin module in under ./admin: " ; read y
+echo -n "Use built-in user management [true]: "; read w
 
 user=${x:-apache}
 group=${z:-apache}
 subnet=${y:-'192.168.0.0/16'}
 subnet="${subnet} 127.0.0.1"
+userMgmt=${w:-true}
 
 echo "Working..."
+
+if ($w) {
 
 for i in ./include
 do
@@ -93,11 +97,13 @@ Order Allow,Deny
 Allow from $subnet
 
 EOS
+}
 
 # Start with web server getting read-only access to everything.
 # Directories have sticky bits set.
 find .           -exec chown $owner:$group {} \;
 find . ! -type d -exec chmod 640 {} \;
 find .   -type d -exec chmod 3750 {} \;
+chmod 0770 templates_c;
 
 echo "Done."
