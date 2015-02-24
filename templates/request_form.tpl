@@ -5,39 +5,39 @@
 
         <tr>
             <td width='30%'>Common Name<font color=red size=3>*</font><br>(i.e. User real name or computer hostname) </td>
-            <td><input type=text name=common_name value="{$common_name|escape:'html'}" size=50 maxlength=60></td>
+            <td><input type=text name=common_name value="{$common_name}" size=50 maxlength=60></td>
         </tr>
 
         <tr>
             <td>E-mail Address <font color=red size=3>*</font></td>
-            <td><input type=text name=email value="{$email|escape:'html'}" size=50 maxlength=60></td>
+            <td><input type=text name=email value="{$email}" size=50 maxlength=60></td>
         </tr>
 
         <tr>
             <td>Organization (Company/Agency)<font color=red size=3>*</font></td>
-            <td><input type=text name=organization value="{$organization|escape:'html'}" size=60 maxlength=60></td>
+            <td><input type=text name=organization value="{$organization}" size=60 maxlength=60></td>
         </tr>
 
         <tr>
-            <td>Department/Unit<font color=red size=3>*</font> </td><td><input type=text name=unit value="{$unit|escape:'html'}" size=40 maxlength=60></td>
+            <td>Department/Unit<font color=red size=3>*</font> </td><td><input type=text name=unit value="{$unit}" size=40 maxlength=60></td>
         </tr>
 
         <tr>
-            <td>Locality (City/County)<font color=red size=3>*</font></td><td><input type=text name=locality value="{$locality|escape:'html'}" size=30 maxlength=30></td>
+            <td>Locality (City/County)<font color=red size=3>*</font></td><td><input type=text name=locality value="{$locality}" size=30 maxlength=30></td>
         </tr>
 
         <tr>
-            <td>State/Province<font color=red size=3>*</font></td><td><input type=text name=province value="{$province|escape:'html'}" size=30 maxlength=30></td>
+            <td>State/Province<font color=red size=3>*</font></td><td><input type=text name=province value="{$province}" size=30 maxlength=30></td>
         </tr>
 
         <tr>
             <td>Country<font color=red size=3>*</font></td>
-            <td><input type=text name=country value="{$country|escape:'html'}" size=2 maxlength=2></td>
+            <td><input type=text name=country value="{$country}" size=2 maxlength=2></td>
         </tr>
 
         <tr>
             <td>Certificate Password<font color=red size=3>*</font> </td>
-            <td><input type=password name=passwd value="{$passwd|escape:'html'}" size=30>&nbsp;&nbsp; Again <input type=password name=passwdv  value="{$passwdv|escape:'html'}" size=30></td>
+            <td><input type=password name=passwd value="{$passwd}" size=30>&nbsp;&nbsp; Again <input type=password name=passwdv  value="{$passwdv}" size=30></td>
         </tr>
 
         <tr>
@@ -82,11 +82,11 @@
         </tr>
 
         <tr id="testrow2" name="testrow2" style="visibility:hidden;display:none;">
-            <td>Alternative DNS Names<br>(only one per Line)</td><td><textarea name="dns_names" cols=30 rows=5>{$dns_names|escape:'html'}</textarea></td>
+            <td>Alternative DNS Names<br>(only one per Line)</td><td><textarea name="dns_names" cols=30 rows=5>{$dns_names}</textarea></td>
         </tr>
 
         <tr id="testrow1" name="testrow1" style="visibility:hidden;display:none;">
-            <td>IP's<br>(only one per Line)</td><td><textarea name="ip_addr" cols=30 rows=5>{$ip_addr|escape:'html'}</textarea></td>
+            <td>IP's<br>(only one per Line)</td><td><textarea name="ip_addr" cols=30 rows=5>{$ip_addr}</textarea></td>
         </tr>
 
         <tr>

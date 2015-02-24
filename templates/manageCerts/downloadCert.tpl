@@ -1,4 +1,4 @@
-<h3>You are about to download the <font color="red">PRIVATE</font> certificate key for {$rec.common_name|escape:'html'} &lt;{$rec.email|escape:'html'}&gt;</h3>
+<h3>You are about to download the <font color="red">PRIVATE</font> certificate key for {$rec.common_name} &lt;{$rec.email}&gt;</h3>
 <h3><font color="red">DO NOT DISTRIBUTE THIS FILE TO THE PUBLIC!</font></h3>
 <form action="{$PHP_SELF}?stage=download&serial={$serial}&{$qstr_sort}&{$qstr_filter}" method="post">
 	<strong>File type: </strong>

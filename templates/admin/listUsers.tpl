@@ -1,5 +1,5 @@
 <p>
-<h3>Contents of {$config.passwd_file|escape:'html'} file:</h3>
+<h3>Contents of {$config.passwd_file} file:</h3>
 <pre>
 
 </pre>

@@ -27,20 +27,20 @@ $ip_addr      = gpvar('ip_addr');
 $PHP_SELF     = basename(__FILE__);
 $S->assign('PHP_SELF', $PHP_SELF);
 
-$S->assign('country',$country);
-$S->assign('province',$province);
-$S->assign('locality',$locality);
-$S->assign('organization',$organization);
-$S->assign('unit',$unit);
-$S->assign('common_name',$common_name);
-$S->assign('email',$email);
-$S->assign('passwd',$passwd);
-$S->assign('passwdv',$passwdv);
-$S->assign('expiry',$expiry);
-$S->assign('keysize',$keysize);
-$S->assign('cert_type',$cert_type);
-$S->assign('dns_names',$dns_names);
-$S->assign('ip_addr',$ip_addr);
+$S->assign('country',htvar($country));
+$S->assign('province',htvar($province));
+$S->assign('locality',htvar($locality));
+$S->assign('organization',htvar($organization));
+$S->assign('unit',htvar($unit));
+$S->assign('common_name',htvar($common_name));
+$S->assign('email',htvar($email));
+$S->assign('passwd',htvar($passwd));
+$S->assign('passwdv',htvar($passwdv));
+$S->assign('expiry',htvar($expiry));
+$S->assign('keysize',htvar($keysize));
+$S->assign('cert_type',htvar($cert_type));
+$S->assign('dns_names',htvar($dns_names));
+$S->assign('ip_addr',htvar($ip_addr));
 
 switch ($form_stage) {
 
@@ -88,7 +88,7 @@ switch ($form_stage) {
 
         if ($email && ($serial = CAdb_in($email,$common_name))) {
             $certtext = CA_cert_text($serial);
-            $er[] = 'A valid certificate already exists for ' . htvar("$common_name  <$email>: <blockquote><pre>". htvar($certtext) . "</pre></blockquote>");
+            $er[] = 'A valid certificate already exists for ' . htvar("$common_name  <$email>"). ": <blockquote><pre>". htvar($certtext) . "</pre></blockquote>";
         }
 
         if ($er)  {
@@ -183,17 +183,17 @@ switch ($form_stage) {
         if (! $dns_names)     $dns_names = "";
         if (! $ip_addr)       $ip_addr = "";
 
-        $S->assign('country',$country);
-        $S->assign('province',$province);
-        $S->assign('locality',$locality);
-        $S->assign('organization',$organization);
-        $S->assign('unit',$unit);
-        $S->assign('email',$email);
-        $S->assign('expiry',$expiry);
-        $S->assign('keysize',$keysize);
-        $S->assign('cert_type',$cert_type);
-        $S->assign('dns_names',$dns_names);
-        $S->assign('ip_addr',$ip_addr);
+        $S->assign('country',htvar($country));
+        $S->assign('province',htvar($province));
+        $S->assign('locality',htvar($locality));
+        $S->assign('organization',htvar($organization));
+        $S->assign('unit',htvar($unit));
+        $S->assign('email',htvar($email));
+        $S->assign('expiry',htvar($expiry));
+        $S->assign('keysize',htvar($keysize));
+        $S->assign('cert_type',htvar($cert_type));
+        $S->assign('dns_names',htvar($dns_names));
+        $S->assign('ip_addr',htvar($ip_addr));
 
         printHeader();
         $S->display('request_form.tpl');

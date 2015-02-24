@@ -40,7 +40,7 @@ $qstr_filter =	'search='.htvar($search).'&'.
 
 $qstr_sort   = "sortfield=$sortfield&ascdec=$ascdec";
 
-$S->assign('search', $search);
+$S->assign('search', htvar($search));
 $S->assign('show_valid', $show_valid);
 $S->assign('show_revoked', $show_revoked);
 $S->assign('show_expired', $show_expired);
@@ -60,7 +60,7 @@ case 'display':
     $certEmail = CA_cert_email($serial);
     $certRevokeDate = CAdb_is_revoked($serial);
     $certText = CA_cert_text($serial);
-    $S->assign('certCommonName',$certCommonName);
+    $S->assign('certCommonName',htvar($certCommonName));
     $S->assign('certEmail',$certEmail);
     $S->assign('certRevokeDate',$certRevokeDate);
     $S->assign('certText',$certText);
@@ -74,6 +74,11 @@ case 'dl-confirm':
     printHeader('ca');
 
     $rec = CAdb_get_entry($serial);
+    if($rec !== false){
+        foreach($rec as $k=>$v){
+            $rec[$k] = htvar($v);
+        }
+    }
     $S->assign('rec',$rec);
 
     $S->display('manageCerts/downloadCert.tpl');
@@ -110,6 +115,11 @@ case 'download':
 case 'revoke-form':
 
     $rec = CAdb_get_entry($serial);
+    if($rec !== false){
+        foreach($rec as $k=>$v){
+            $rec[$k] = htvar($v);
+        }
+    }
     $S->assign('rec',$rec);
 
     printHeader('ca');
@@ -146,6 +156,11 @@ case 'renew-form':
     # Get values from the old certificate.
     #
     $rec = CAdb_get_entry($serial);
+    if ($rec !== false) {
+        foreach ($rec as $k => $v) {
+            $rec[$k] = htvar($v);
+        }
+    }
 
     $S->assign('rec',$rec);
 
@@ -214,6 +229,12 @@ default:
     foreach($db as $key=>$rec){
         $db[$key]['issued'] = DateTime::createFromFormat('y-M-j', $rec['issued'])->getTimestamp();
         $db[$key]['expires'] = DateTime::createFromFormat('y-M-j', $rec['expires'])->getTimestamp();
+        $db[$key]['common_name'] = htvar($rec['common_name']);
+        $db[$key]['email'] = htvar($rec['email']);
+        $db[$key]['organization'] = htvar($rec['organization']);
+        $db[$key]['unit'] = htvar($rec['unit']);
+        $db[$key]['locality'] = htvar($rec['locality']);
+
     }
 
     $stcolor = array(

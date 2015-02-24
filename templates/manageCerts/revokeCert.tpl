@@ -14,14 +14,14 @@
 				</p>
 			</td>
 			<td>
-				{$rec.serial|escape:'html'}<br>
-				{$rec.common_name|escape:'html'}<br>
-				{$rec.email|escape:'html'}<br>
-				{$rec.organization|escape:'html'}<br>
-				{$rec.unit|escape:'html'}<br>
-				{$rec.locality|escape:'html'}<br>
-				{$rec.province|escape:'html'}<br>
-				{$rec.country|escape:'html'}<br>
+				{$rec.serial}<br>
+				{$rec.common_name}<br>
+				{$rec.email}<br>
+				{$rec.organization}<br>
+				{$rec.unit}<br>
+				{$rec.locality}<br>
+				{$rec.province}<br>
+				{$rec.country}<br>
 				</td>
 		</tr>
 	</table>
@@ -29,7 +29,7 @@
 	<p>
 		<form action="{$PHP_SELF}?{$qstr_sort}&{$qstr_filter}" method="post">
 			<input type="hidden" name="stage" value="revoke" >
-			<input type="hidden" name="serial" value="{$serial|escape:'html'}" >
+			<input type="hidden" name="serial" value="{$serial}" >
 			<input type="submit" name="submit" value="Yes">&nbsp
 			<input type="submit" name="submit" value="Cancel">
 		</form>

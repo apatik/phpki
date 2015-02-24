@@ -7,12 +7,12 @@
 
         <tr>
             <td width="35%"><strong>Organization</strong> <font color=red>*</font></td>
-            <td><input type=text name=organization value="{$organization|escape:'html'}" maxlength=60 size=50></td>
+            <td><input type=text name=organization value="{$organization}" maxlength=60 size=50></td>
         </tr>
 
         <tr>
             <td><strong>Department/Unit</strong> <font color=red>*</font></td>
-            <td><input type=text name=unit value="{$unit|escape:'html'}" maxlength=60 size=30></td>
+            <td><input type=text name=unit value="{$unit}" maxlength=60 size=30></td>
         </tr>
 
         <tr>
@@ -22,7 +22,7 @@
                 e-mail clients as the <cite>Issued By:</cite> text.  This is usually
                 the full name of your certificate authority (i.e. ACME Certificate Authority).
             </td>
-            <td><input type=text name=common_name value="{$common_name|escape:'html'}" maxlength=60 size=60></td>
+            <td><input type=text name=common_name value="{$common_name}" maxlength=60 size=60></td>
         </tr>
 
         <tr>
@@ -32,22 +32,22 @@
                 regarding your certificate authority and the certificates you issue.
             </td>
 
-            <td><input type=text name=contact value="{$contact|escape:'html'}" maxlength=60 size=30></td>
+            <td><input type=text name=contact value="{$contact}" maxlength=60 size=30></td>
         </tr>
 
         <tr>
             <td><strong>Locality</strong> <font color=red>*</font></td>
-            <td><input type=text name=locality value="{$locality|escape:'html'}" maxlength=60 size=30></td>
+            <td><input type=text name=locality value="{$locality}" maxlength=60 size=30></td>
         </tr>
 
         <tr>
             <td><strong>State/Province</strong> <font color=red>*</font></td>
-            <td><input type=text name=province value="{$province|escape:'html'}" maxlength=60 size=20></td>
+            <td><input type=text name=province value="{$province}" maxlength=60 size=20></td>
         </tr>
 
         <tr>
             <td><strong>Country</strong> <font color=red>*</font></td>
-            <td><input type=text name=country value="{$country|escape:'html'}" maxlength=2 size=2></td>
+            <td><input type=text name=country value="{$country}" maxlength=2 size=2></td>
         </tr>
 
         <tr>
@@ -56,7 +56,7 @@
                 This password will be used to protect your root certificate private
                 key.<br/>Can't contain single quote ! <strong><font color=red>Do not lose or forget this password.</font></strong>
             </td>
-            <td><input type=password name=passwd value="{$passwd|escape:'html'}" size=30>&nbsp;&nbsp; Again <input type=password name=passwdv value="{$passwdv|escape:'html'}" size=30></td>
+            <td><input type=password name=passwd value="{$passwd}" size=30>&nbsp;&nbsp; Again <input type=password name=passwdv value="{$passwdv}" size=30></td>
         </tr>
 
         <tr>
@@ -95,7 +95,7 @@
                 by your CA, for informational purposes.
             </td>
             <td>
-                <input type=text name=base_url value="{$base_url|escape:'html'}" size=50>
+                <input type=text name=base_url value="{$base_url}" size=50>
             </td>
         </tr>
 
@@ -107,7 +107,7 @@
                 You may leave it by default if your clients have direct access to PHPki.
             </td>
             <td>
-                <input type=text name=crl_distrib value="{$crl_distrib|escape:'html'}" size=50>
+                <input type=text name=crl_distrib value="{$crl_distrib}" size=50>
             </td>
         </tr>
 
@@ -119,7 +119,7 @@
                 You may leave it by default if your clients have direct access to PHPki.
             </td>
             <td>
-                <input type=text name=revoke_url value="{$revoke_url|escape:'html'}" size=50>
+                <input type=text name=revoke_url value="{$revoke_url}" size=50>
             </td>
         </tr>
 
@@ -131,7 +131,7 @@
                 You may leave it by default or adjust to your environment.
             </td>
             <td>
-                <input type=text name=policy_url value="{$policy_url|escape:'html'}" size=50>
+                <input type=text name=policy_url value="{$policy_url}" size=50>
             </td>
         </tr>
 
@@ -142,7 +142,7 @@
                 or use the default value set by PHPki.
             </td>
             <td>
-                <input type=text name=comment_root value="{$comment_root|escape:'html'}" size=50>
+                <input type=text name=comment_root value="{$comment_root}" size=50>
             </td>
         </tr>
 
@@ -153,7 +153,7 @@
                 or use the default value set by PHPki.
             </td>
             <td>
-                <input type=text name=comment_email value="{$comment_email|escape:'html'}" size=50>
+                <input type=text name=comment_email value="{$comment_email}" size=50>
             </td>
         </tr>
 
@@ -164,7 +164,7 @@
                 to something or use the default value set by PHPki.
             </td>
             <td>
-                <input type=text name=comment_sign value="{$comment_sign|escape:'html'}" size=50>
+                <input type=text name=comment_sign value="{$comment_sign}" size=50>
             </td>
         </tr>
 
@@ -175,7 +175,7 @@
                 or use the default value set by PHPki.
             </td>
             <td>
-                <input type=text name=comment_srv value="{$comment_srv|escape:'html'}" size=50>
+                <input type=text name=comment_srv value="{$comment_srv}" size=50>
             </td>
         </tr>
 
@@ -186,7 +186,7 @@
                 to something or use the default value set by PHPki.
             </td>
             <td>
-                <input type=text name=comment_stamp value="{$comment_stamp|escape:'html'}" size=50>
+                <input type=text name=comment_stamp value="{$comment_stamp}" size=50>
             </td>
         </tr>
 
@@ -206,7 +206,7 @@
                 outside of DOCUMENT_ROOT ({$DOCUMENT_ROOT}).  You may have to manually create the directory before completing this form.
             </td>
             <td>
-                <input type=text name=store_dir value="{$store_dir|escape:'html'}" size=35>
+                <input type=text name=store_dir value="{$store_dir}" size=35>
             </td>
         </tr>
 
@@ -216,7 +216,7 @@
                 Enter the location of your OpenSSL binary.  The default is usually ok.
             </td>
             <td>
-                <input type=text name=openssl_bin value="{$openssl_bin|escape:'html'}" size=35>
+                <input type=text name=openssl_bin value="{$openssl_bin}" size=35>
             </td>
         </tr>
 
@@ -226,7 +226,7 @@
                 Enter the location of your PHPki user password file.  The default is usually ok.
             </td>
             <td>
-                <input type=text name=passwd_file value="{$passwd_file|escape:'html'}" size=35>
+                <input type=text name=passwd_file value="{$passwd_file}" size=35>
             </td>
         </tr>
 
@@ -240,7 +240,7 @@
                 <cite>"acme_caroot.crt"</cite>.
             </td>
             <td>
-                <input type=text name=ca_prefix value="{$ca_prefix|escape:'html'}" maxlength=10 size=10>
+                <input type=text name=ca_prefix value="{$ca_prefix}" maxlength=10 size=10>
             </td>
         </tr>
 
@@ -251,7 +251,7 @@
                 top of every page.
             </td>
             <td>
-                <input type=text name=header_title value="{$header_title|escape:'html'}" maxlength=40 size=40>
+                <input type=text name=header_title value="{$header_title}" maxlength=40 size=40>
             </td>
         </tr>
 
@@ -264,7 +264,7 @@
                 tags to improve presentation.
             </td>
             <td>
-                <textarea name=getting_help cols=50 rows=15>{$getting_help|escape:'html'}</textarea>
+                <textarea name=getting_help cols=50 rows=15>{$getting_help}</textarea>
             </td>
         </tr>
     </table>

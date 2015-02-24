@@ -6,37 +6,37 @@
 
 		<tr>
 			<td width="25%">Common Name </td>
-			<td><input type="text" name="common_name" value="{$rec.common_name|escape:'html'}" size=50 maxlength=60 disabled></td>
+			<td><input type="text" name="common_name" value="{$rec.common_name}" size=50 maxlength=60 disabled></td>
 		</tr>
 
 		<tr>
 			<td>E-mail Address </td>
-			<td><input type="text" name="email" value="{$rec.email|escape:'html'}" size=50 maxlength=60 disabled></td>
+			<td><input type="text" name="email" value="{$rec.email}" size=50 maxlength=60 disabled></td>
 		</tr>
 
 		<tr>
 			<td>Organization </td>
-			<td><input type="text" name="organization" value="{$rec.organization|escape:'html'}" size=60 maxlength=60 disabled></td>
+			<td><input type="text" name="organization" value="{$rec.organization}" size=60 maxlength=60 disabled></td>
 		</tr>
 
 		<tr>
 			<td>Department/Unit </td>
-			<td><input type="text" name="unit" value="{$rec.unit|escape:'html'}" size=40 maxlength=60 disabled></td>
+			<td><input type="text" name="unit" value="{$rec.unit}" size=40 maxlength=60 disabled></td>
 		</tr>
 
 		<tr>
 			<td>Locality</td>
-			<td><input type="text" name="locality" value="{$rec.locality|escape:'html'}" size=30 maxlength=30 disabled></td>
+			<td><input type="text" name="locality" value="{$rec.locality}" size=30 maxlength=30 disabled></td>
 		</tr>
 
 		<tr>
 			<td>State/Province</td>
-			<td><input type="text" name="province" value="{$rec.province|escape:'html'}" size=30 maxlength=30 disabled></td>
+			<td><input type="text" name="province" value="{$rec.province}" size=30 maxlength=30 disabled></td>
 		</tr>
 
 		<tr>
 			<td>Country</td>
-			<td><input type="text" name="country" value="{$rec.country|escape:'html'}" size=2 maxlength=2 disabled></td>
+			<td><input type="text" name="country" value="{$rec.country}" size=2 maxlength=2 disabled></td>
 		</tr>
 
 		<tr>
@@ -67,7 +67,7 @@
 			</td>
 			<td>
 				<input type="hidden" name="stage" value="renew">
-				<input type="hidden" name="serial" value="{$serial|escape:'html'}">
+				<input type="hidden" name="serial" value="{$serial}">
 			</td>
 		</tr>
 	</table>

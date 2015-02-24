@@ -6,7 +6,7 @@
 <center>
 	<form action="{$PHP_SELF}" method="post">
 		<input type="hidden" name="stage" value="add_user_form">
-		<input type="hidden" name="login" value="{$login|escape:'html'}">
+		<input type="hidden" name="login" value="{$login}">
 		<input type="submit" name="submit" value="Back">
 	</form>
 </center>

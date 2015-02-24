@@ -9,7 +9,7 @@ $login   = gpvar('login');
 $passwd  = gpvar('passwd');
 $passwdv = gpvar('passwdv');
 
-$S->assign('login', $login);
+$S->assign('login', htvar($login));
 
 switch($stage) {
 case 'list_users':
