@@ -25,42 +25,43 @@ As of v1.0.0, PHPki now uses smarty templates for cleaner code. PHPki has compos
 
 To install composer:
 
-curl -sS https://getcomposer.org/installer | php -- --install-dir=bin
-(this installs it in /bin. You can change it to install anywhere else you'd prefer, just make sure it's a part of your PATH if you don't want to specify a full path to the file when using it)
+    curl -sS https://getcomposer.org/installer | php -- --install-dir=bin
+This installs it in */bin*. You can change it to install anywhere else you'd prefer, just make sure it's a part of your PATH if you don't want to specify a full path to the file when using it.
 
 To install smarty, from the directory where you placed the PHPki files, run:
 
-composer.phar install
+    composer.phar install
 
-Additionally, you need to set your timezone in php.ini
-e.g. date.timezone = America/Chicago
+Additionally, you need to set your timezone in php.ini, e.g. date.timezone = America/Chicago
 
 Example Apache config to secure the site with OpenLDAP authentication, instead of the built in user support
 (you will need to adjust the LDAP URL and Bind DN to mach your environment, of course):
 
 
-<VirtualHost *:80>
-	ServerName phpki.company.com
-	ServerAlias phpki
-	DocumentRoot /var/www/html/phpki
 
-	<Directory "/var/www/html/phpki">
-		AllowOverride None
-		Order allow,deny
-		Allow from all
+    <VirtualHost *:80>
+        	ServerName phpki.company.com
+    	    ServerAlias phpki
+        	DocumentRoot /var/www/html/phpki
 
-		AuthType Basic
-		AuthName "PHPki Access (LDAP)"
-		AuthBasicProvider ldap
-		AuthLDAPURL "ldap://192.168.1.1/OU=people,DC=company,DC=com?uid"
-		AuthLDAPBindDN "UID=apache,OU=services,DC=company,DC=com"
-		AuthLDAPBindPassword "SuperSecurePassword"
-		AuthzLDAPAuthoritative Off
-		require valid-user
-	</Directory>
-</VirtualHost>
+    	<Directory "/var/www/html/phpki">
+    		AllowOverride None
+    		Order allow,deny
+    		Allow from all
 
-User credentials are sent in cleartext, so you are strongly encouraged to enable SSL (you do have a CA now, after all)
+    		AuthType Basic
+    		AuthName "PHPki Access (LDAP)"
+    		AuthBasicProvider ldap
+    		AuthLDAPURL "ldap://192.168.1.1/OU=people,DC=company,DC=com?uid"
+    		AuthLDAPBindDN "UID=apache,OU=services,DC=company,DC=com"
+    		AuthLDAPBindPassword "SuperSecurePassword"
+    		AuthzLDAPAuthoritative Off
+    		require valid-user
+    	</Directory>
+    </VirtualHost>
+
+
+**User credentials are sent in cleartext, so you are strongly encouraged to enable SSL (you do have a CA now, after all)**
 
 
 PHPki has been tested to work on both Apache + mod_php and Nginx + PHPFPM, on both PHP versions 5.3 nd 5.5. While no guarantees are made, it should run on any modern-ish version of these programs, so don't sweat it.
