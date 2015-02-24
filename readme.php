@@ -1,13 +1,10 @@
 <?php
 
-include('./config.php');
-include('./include/my_functions.php');
-include('./include/common.php');
+require_once('./include/std_include.php');
 
-printHeader('setup');
-print '<center><font color=red><h1>READ ME</h1></font></center>';
-print '<pre>';
-readfile('./README.md');
-print '</pre>';
+printHeader();
+$readme = file_get_contents('./README.md');
+$S->assign('readme', $readme);
+$S->display('no_config_exists.tpl');
 printFooter();
-?>
+exit;

@@ -10,7 +10,7 @@ Main changes
 ------------
 
 * Changed hash algorithm from MD5 to SHA
-
+* Removed reliance on deprecated PHP functionality, allowing use of a modern version of PHP without a log full of warnings
 
 Planned changes
 ---------------
@@ -19,8 +19,35 @@ Planned changes
 * Strip out built-in password support -- this can be implemented by the webserver (htaccess) or a bolt-on like SimpleSAMLphp
 * Fix CRL subsystem (I found this to not be operational, have not yet investigated)
 
+Changelog
+---------------
 
-Original README (0.83)
+v1.0.0
+    Switched to semantic versioning
+    Changed hash algorithm from the now insecure SHA1 to SHA2
+    Fixed issue with the DNS / IP address boxes being filled with codes instead of the actual names / addresses
+    Moved all HTML to smarty templates for cleaner code / easier maintenance
+    Changed logic for checking the subjectAltNames to make it more in line with RFC 6125
+    Removed requirements for all parts of the DN to be specified (email, organizational unit, etc.). The only ones that are now required are common name and organization (and obviously email when issuing an email certificate). It is still recommended that you include as much of this info as possible, though.
+
+
+System Preparation
+---------------
+As of v1.0.0, PHPki now uses smarty templates for cleaner code. PHPki has composer support, to make installing smarty as painless as possible.
+
+To install composer:
+
+curl -sS https://getcomposer.org/installer | php -- --install-dir=bin
+(this installs it in /bin. You can change it to install anywhere else you'd prefer, just make sure it's a part of your PATH if you don't want to specify a full path to the file when using it)
+
+To install smarty, from the directory where you placed the PHPki files, run:
+
+composer.phar install
+
+Additionally, you need to set your timezone in php.ini
+e.g. date.timezone = America/Chicago
+
+Original README (0.83) (some of this info is now outdated)
 ======================
 NOTICE:
 This application is designed to be an easy to use "certificate factory"
@@ -46,13 +73,12 @@ in the directory where PHPki is installed.  If you don't know what this
 means, then go Googling.
 
 With PHP 5, make sure register_long_arrays in turn on in php.ini or .htaccess.
-Otherwise, you may get an error similar to "method=post was not found on this se
-rver.
+Otherwise, you may get an error similar to "method=post was not found on this server."
 
 INSTALLATION:
 Make sure "AllowOverride All" is set in your Apache configuration file.
 This is necessary because PHPki uses .htaccess files to implement HTTP
-authentication and to enforce file access restrictions.  If you must 
+authentication and to enforce file access restrictions.  If you must
 change this Apache setting, don't forget to restart Apache.
 
 Unpack the PHPki tarball onto your web server. For example:
@@ -67,9 +93,9 @@ point your browser to where you unpacked PHPki. For example:
 
 	http://www.domain.com/phpki/
 
-Enter all the requested information into the web form and click the Submit 
+Enter all the requested information into the web form and click the Submit
 button.  If all goes well, you should see a page telling you that your
-root certificate has been created. 
+root certificate has been created.
 
 To access the PHPki public content menu, point your browser to your
 PHPki installation (i.e. http://www.domain.com/phpki/).  To access the
@@ -81,33 +107,33 @@ menu if you have secured the application using the secure.sh script.
 
 SECURITY & USERS:
 From a root user shell prompt, run the "secure.sh" shell script in this
-directory to set more restrictive Unix file permissions, and to create 
-the Apache .htaccess files which are necessary to force SSL access, HTTP 
+directory to set more restrictive Unix file permissions, and to create
+the Apache .htaccess files which are necessary to force SSL access, HTTP
 authentication, and directory access restrictions.  If you don't do this
 you will likely be extremely screwed!  Don't say you weren't warned.
 
 The secure.sh script will attempt to create a file for your user list
 and passwords.  If it fails in that attempt, you will have to use Apache's
-htpasswd utility to manually create a "phpkipasswd" file in the location 
+htpasswd utility to manually create a "phpkipasswd" file in the location
 you specified during setup.
 
 	htpasswd -cm /var/www/phpkipasswd username
 
 Normal users may only manage the certificates they create.  Administrators
-can manage all certificates.  The default administrator account is 
-"pkiadmin".  The secure.sh script will attempt to add this user to your 
-phpkipasswd file when it is first created.  Other users can be made 
-administrators by carefully editing the $PHPki_admins assignment in 
+can manage all certificates.  The default administrator account is
+"pkiadmin".  The secure.sh script will attempt to add this user to your
+phpkipasswd file when it is first created.  Other users can be made
+administrators by carefully editing the $PHPki_admins assignment in
 config/config.php under your certificate store directory.
 
 You may add additional users and change passwords using your browser after
 you have successfully installed PHPki and created your phpkipasswd file with
-at least one user. Point your browser to http://www.domain.com/phpki/admin/.  
+at least one user. Point your browser to http://www.domain.com/phpki/admin/.
 
 
 UPGRADING:
 Install and configure as if it were a first time installation (see above).
-Be sure to specify the same root certificate password and user password file 
+Be sure to specify the same root certificate password and user password file
 location you used with the previous version.
 
 From the old installation, copy all certificates, crls, and user defaults
@@ -117,8 +143,8 @@ to the store directory specified during setup.
 	cp -v --archive oldphpki/CA   store_directory
 	cp -v --archive oldphpki/config/user-*.php  newphpki/ca/config
 
-These upgrade instructions have not been thoroughly tested and may be 
-incomplete.  Please be sure to fully backup your old PHPki installation before 
+These upgrade instructions have not been thoroughly tested and may be
+incomplete.  Please be sure to fully backup your old PHPki installation before
 upgrading.
 
 

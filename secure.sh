@@ -14,7 +14,7 @@ This application stores private keys within a sub-directory, making them
 potentially susceptible to compromise.  Extra care has been taken in the
 design of this application to protect the security of your certificates,
 on the condition that you INSTALL IT AS THE ROOT USER.  However, no
-software is 100% secure.  
+software is 100% secure.
 
 EOM
 
@@ -22,7 +22,7 @@ read -p "Enter the location of your PHPki password (i.e. /etc/phpkipasswd): " pa
 
 echo
 
-if [ ! -f "$passwd_file" ] 
+if [ ! -f "$passwd_file" ]
 then
     echo "The file you specified does not yet exist."
     echo "Let's create it and add your first user."
@@ -41,14 +41,14 @@ fi
 
 echo
 
-if [ ! "${owner}_" = "root_" ] 
+if [ ! "${owner}_" = "root_" ]
 then
 	cat <<EOM
 YOU ARE NOT LOGGED ON AS ROOT!
 
 If you choose to proceed anyway, and you plan to make this application
 available over the Internet, you increase the risk of compromising the
-security of your certifcates and your server.  
+security of your certifcates and your server.
 
 This script may not run correctly if you are not the ROOT user.
 
@@ -72,7 +72,7 @@ echo "Working..."
 for i in ./include
 do
 	echo "deny from all" >$i/.htaccess
-done 
+done
 
 cat <<EOS >> ./ca/.htaccess
 AuthName "Restricted Area"
@@ -83,7 +83,7 @@ SSLRequireSSL
 
 EOS
 
-cat <<EOS > ./admin/.htaccess 
+cat <<EOS > ./admin/.htaccess
 AuthName "Restricted Area"
 AuthType Basic
 AuthUserFile "$passwd_file"
