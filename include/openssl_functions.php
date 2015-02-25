@@ -52,8 +52,10 @@ function CA_create_cnf($country='',$province='',$locality='',$organization='',$u
     $S->assign('common_name',$common_name);
     $S->assign('email',$email);
     $S->assign('keysize',$keysize);
+    $S->assign('alt_names',$alt_names);
     $S->assign('server_altnames',$server_altnames);
     $S->assign('serial',$serial);
+    $S->assign('issuer',$issuer);
     $S->assign('config',$config);
 
 
@@ -170,8 +172,54 @@ function CAdb_issuer($serial) {
 //
 function CAdb_explode_entry($dbentry) {
     $a = explode("\t", $dbentry);
-    $b  = preg_split('/\/([A-Z]|[a-z])+=/', $a[5]);
+    $b = explode('/',$a[5]);
 
+    $db['country']      = '';
+    $db['province']     = '';
+    $db['locality']     = '';
+    $db['organization'] = '';
+    $db['issuer']       = '';
+    $db['unit']         = '';
+    $db['common_name']  = '';
+    $db['email']        = '';
+
+    foreach ($b as $dnPart){
+        $d = explode('=',$dnPart);
+        if (!empty($d)){
+            switch ($d[0]) {
+                case "C":
+                    $db['country'] = $d[1];
+                    break;
+                case "ST":
+                    $db['province'] = $d[1];
+                    break;
+                case "L":
+                    $db['locality'] = $d[1];
+                    break;
+                case "O":
+                    # Both the "issuing user" and organization are saved
+                    # under O tags, this way to separate them is a bit hacky, but should work...
+                    if (preg_match('/^[a-f0-9]{32}$/', $d[1])){
+                        $db['issuer'] = $d[1];
+                    }
+                    else {
+                        $db['organization'] = $d[1];
+                    }
+                    break;
+                case "OU":
+                    $db['unit'] = $d[1];
+                    break;
+                case "CN":
+                    $db['common_name'] = $d[1];
+                    break;
+                case "emailAddress":
+                    $db['email'] = $d[1];
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
     switch ($a[0]) {
         case "V":
             $db['status'] = "Valid";
@@ -191,14 +239,6 @@ function CAdb_explode_entry($dbentry) {
         $db['status'] = "Expired";
 
     $db['serial']       = $a[3];
-    $db['country']      = $b[1];
-    $db['province']     = $b[2];
-    $db['locality']     = $b[3];
-    $db['organization'] = $b[4];
-    $db['issuer']       = $b[5];
-    $db['unit']         = $b[6];
-    $db['common_name']  = $b[7];
-    $db['email']        = $b[8];
 
     return $db;
 }

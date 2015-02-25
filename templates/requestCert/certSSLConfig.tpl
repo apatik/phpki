@@ -24,13 +24,36 @@ distinguished_name  = req_name
 req_extensions      = req_ext
 
 [ req_name]
-{if $country}C={$country}{/if}
-{if $province}ST={$province}{/if}
-{if $locality}L={$locality}{/if}
-{if $organization}O={$organization}{/if}
-{if $unit}OU={$unit}{/if}
-{if $common_name}CN={$common_name}{/if}
-{if $email}emailAddress={$email}{/if}
+{if $country}
+C={$country}
+{/if}
+
+{if $province}
+ST={$province}
+{/if}
+
+{if $locality}
+L={$locality}
+{/if}
+
+{if $organization}
+0.O={$organization}
+1.O={$issuer}
+{else}
+O={$issuer}
+{/if}
+
+{if $unit}
+OU={$unit}
+{/if}
+
+{if $common_name}
+CN={$common_name}
+{/if}
+
+{if $email}
+emailAddress={$email}
+{/if}
 
 [ ca ]
 default_ca             = email_cert
@@ -67,13 +90,27 @@ policy                 = policy_supplied
 
 
 [ policy_supplied ]
-{if $country}countryName            = supplied{/if}
-{if $province}stateOrProvinceName    = supplied{/if}
-{if $locality}localityName           = supplied{/if}
-{if $organization}organizationName       = supplied{/if}
-{if $unit}organizationalUnitName = supplied{/if}
-{if $common_name}commonName             = supplied{/if}
-{if $email}emailAddress           = supplied{/if}
+{if $country}
+countryName            = supplied
+{/if}
+{if $province}
+stateOrProvinceName    = supplied
+{/if}
+{if $locality}
+localityName           = supplied
+{/if}
+{if $organization}
+organizationName       = supplied
+{/if}
+{if $unit}
+organizationalUnitName = supplied
+{/if}
+{if $common_name}
+commonName             = supplied
+{/if}
+{if $email}
+emailAddress           = supplied
+{/if}
 
 [ req_ext]
 basicConstraints = CA:false
@@ -177,6 +214,7 @@ nsCertType              = critical, server, client
 subjectKeyIdentifier    = hash
 authorityKeyIdentifier  = keyid:always, issuer:always
 subjectAltName          = DNS:{$common_name}{if $email},email:copy{/if}
+
 
 [alt_names]
 {$alt_names}
