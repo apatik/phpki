@@ -84,11 +84,26 @@ function CAdb_to_array($search = '.*') {
     if (! ereg('^\^\[.*\]', $search)) $search = '^[VRE].*'.$search;
 
     # Include valid certs?
-    if (ereg('^\^\[.*V.*\]',$search)) $inclval = true;
+    if (ereg('^\^\[.*V.*\]',$search)) {
+        $includeValid = true;
+    }
+    else {
+        $includeValid = false;
+    };
     # Include revoked certs?
-    if (ereg('^\^\[.*R.*\]',$search)) $inclrev = true;
+    if (ereg('^\^\[.*R.*\]',$search)) {
+        $includeRevoked = true;
+    }
+    else {
+        $includeRevoked = false;
+    };
     # Include expired certs?
-    if (ereg('^\^\[.*E.*\]',$search)) $inclexp = true;
+    if (ereg('^\^\[.*E.*\]',$search)) {
+        $includeExpired = true;
+    }
+    else {
+        $includeExpired = false;
+    };
 
     # There isn't really a status of 'E' in the openssl index.
     # Change (E)xpired to (V)alid within the search string.
@@ -98,7 +113,7 @@ function CAdb_to_array($search = '.*') {
     exec('egrep -i '.escshellarg($search).' '.$config['index'], $x);
     foreach($x as $y) {
         $i = CAdb_explode_entry($y);
-        if (($i['status'] == "Valid" && $inclval) || ($i['status'] == "Revoked" && $inclrev) || ($i['status'] == "Expired" && $inclexp))
+        if (($i['status'] == "Valid" && $includeValid) || ($i['status'] == "Revoked" && $includeRevoked) || ($i['status'] == "Expired" && $includeExpired))
             $db[$i['serial']] = $i;
     }
 
