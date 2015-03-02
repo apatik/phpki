@@ -136,6 +136,25 @@ function CAdb_get_entry($serial) {
     }
 }
 
+//
+// Returns an array containing the Elliptic Curves
+// available on the system
+//
+function CAdb_get_curves() {
+    $curves = array();
+    exec(ECPARAM . ' -list_curves 2>&1', $output, $returnVar);
+    if ($returnVar == 0) {
+        foreach($output as $line) {
+            $x = explode(':', $line);
+            $curves[] = trim($x[0]);
+        }
+    }
+    else {
+        return false;
+    }
+    return($curves);
+}
+
 
 //
 // Returns the serial number of a VALID certificate matching 
@@ -388,7 +407,7 @@ function CA_revoke_cert($serial) {
 //
 // Returns an array containing the output of failed openssl commands.
 //
-function CA_create_cert($cert_type='email',$country,$province,$locality,$organization,$unit,$common_name,$email,$expiry,$passwd,$keysize=2048,$dns_names,$ip_addr) {
+function CA_create_cert($cert_type='email',$country,$province,$locality,$organization,$unit,$common_name,$email,$expiry,$passwd,$keysize=4096,$dns_names,$ip_addr,$encryptionType='RSA',$ecCurve) {
     global $config;
 
     # Wait here if another user has the database locked.
@@ -418,11 +437,22 @@ function CA_create_cert($cert_type='email',$country,$province,$locality,$organiz
     unset($cmd_output);
     $cmd_output[] = 'Creating certificate request.';
 
-    if ($passwd) {
-        exec(REQ." -new -newkey rsa:$keysize -keyout '$userkey' -out '$userreq' -config '$cnf_file' -days '$expiry_days' -passout pass:$_passwd  2>&1", $cmd_output, $ret);
+    if ($encryptionType == 'RSA') {
+        if ($passwd) {
+            exec(REQ." -new -newkey rsa:$keysize -keyout '$userkey' -out '$userreq' -config '$cnf_file' -days '$expiry_days' -passout pass:$_passwd  2>&1", $cmd_output, $ret);
+        }
+        else {
+            exec(REQ." -new -nodes -newkey rsa:$keysize -keyout '$userkey' -out '$userreq' -config '$cnf_file' -days '$expiry_days' 2>&1", $cmd_output, $ret);
+        }
     }
-    else {
-        exec(REQ." -new -nodes -newkey rsa:$keysize -keyout '$userkey' -out '$userreq' -config '$cnf_file' -days '$expiry_days' 2>&1", $cmd_output, $ret);
+    elseif ($encryptionType == 'EC'){
+        if ($passwd) {
+            exec(OPENSSL . " genpkey -paramfile " . $config["ca_ecparam_$ecCurve"] . " -out $userkey 2>&1");
+            exec(REQ . " -new -out '$userreq' -config '$cnf_file' -days '$expiry_days' -key $userkey -passout pass:'$_passwd' 2>&1", $cmd_output, $ret);
+        }
+        else {
+            exec(REQ." -new -nodes -newkey rsa:$keysize -keyout '$userkey' -out '$userreq' -config '$cnf_file' -days '$expiry_days' 2>&1", $cmd_output, $ret);
+        }
     }
 
     # Sign the certificate request and create the certificate

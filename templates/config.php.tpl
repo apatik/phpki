@@ -46,6 +46,9 @@ $config['revoke_url']  = '{$revoke_url}';
 # Certificate Authority Policy URL
 $config['policy_url']  = '{$policy_url}';
 
+# Preferred Elliptic Curve to use for EC certificates
+$config['ecCurve'] = '{$ecCurve}';
+
 # Certificate Comment Fields
 $config['comment_root']  = '{$comment_root}';
 $config['comment_email']  = '{$comment_email}';
@@ -55,7 +58,7 @@ $config['comment_stamp']  = '{$comment_stamp}';
 
 # Who users should contact if they have technical difficulty with
 # your certificate authority site.
-$config['getting_help'] = '$getting_help';
+$config['getting_help'] = '{$getting_help}';
 
 #
 # You shouldn't change anything below this line.  If you do, don't
@@ -76,6 +79,9 @@ $config['cacert_pem']    = $config['cert_dir'] . '/cacert.pem';
 $config['cacrl_pem']     = $config['crl_dir'] . '/cacrl.pem';
 $config['cacrl_der']     = $config['crl_dir'] . '/cacrl.crl';
 $config['cakey']         = $config['private_dir'] . '/cakey.pem';
+{foreach from=$curves item=curve}
+$config['ca_ecparam_{$curve}']      = $config['private_dir'] . '/ecparam_{$curve}.pem';
+{/foreach}
 
 # Default OpenSSL Config File.
 $config['openssl_cnf']   = $config['home_dir'] . '/config/openssl.cnf';
@@ -88,3 +94,5 @@ define('PKCS12', "RANDFILE='$config[random]' " . OPENSSL . ' pkcs12 ');
 define('CA', OPENSSL . ' ca ');
 define('REQ', OPENSSL . ' req ');
 define('CRL', OPENSSL . ' crl ');
+define('ECPARAM', OPENSSL . ' ecparam ');
+define('EC', OPENSSL . ' ec ');

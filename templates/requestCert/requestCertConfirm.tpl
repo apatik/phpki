@@ -11,7 +11,11 @@
                 State/Province<br>
                 Country<br>
                 Certificate Life<br>
+                {if $encryptionType eq 'RSA'}
                 Key Size<br>
+                {else}
+                Elliptic Curve<br>
+                {/if}
                 Certificate Use<br>
                 {if $cert_type eq 'server'}
                 DNS Alt Names<br>
@@ -29,7 +33,11 @@
             {$province}<br>
             {$country}<br>
             {$expiry} Year{if $expiry neq 1}s{/if}<br>
+            {if $encryptionType eq 'RSA'}
             {$keysize} bits<br>
+            {else}
+            {$ecCurve}<br>
+            {/if}
 
             {$cert_usage}<br>
             {if $cert_type eq 'server'}
@@ -57,6 +65,8 @@
     <input type=hidden name="cert_type" value="{$cert_type}">
     <input type=hidden name="dns_names" value="{$dns_names}">
     <input type=hidden name="ip_addr" value="{$ip_addr}">
+    <input type=hidden name="encryptionType" value="{$encryptionType}">
+    <input type=hidden name="ecCurve" value="{$ecCurve}">
     <input type=hidden name="form_stage" value="final">
     <input type=submit name="submit" value="Yes!  Create and Download">&nbsp;
     <input type=submit name="submit" value="Go Back">

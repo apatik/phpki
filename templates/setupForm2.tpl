@@ -75,13 +75,39 @@
 
         <tr>
             <td>
+                Certificate Key Type
+            </td>
+            <td>
+                <select name="encryptionType" onchange={literal}"if (this.value=='EC'){setVisibility('curve',true); setVisibility('RSAKeySize',false);} else {setVisibility('curve',false); setVisibility('RSAKeySize',true);}"{/literal}>
+                    <option value="RSA">RSA</option>
+                    <option value="EC">Elliptic Curve</option>
+                </select>
+            </td>
+        </tr>
+
+        <tr id="curve" style="visibility: hidden; display: none;">
+            <td>
+                Elliptic Curve to Use
+            </td>
+            <td>
+                <select name="ecCurve">
+                    {foreach $curves as $curve}
+                        <option value="{$curve}" {if $ecCurve eq $curve}selected='selected'{/if}">{$curve}</option>
+                    {/foreach}
+                </select>
+            </td>
+        </tr>
+
+        <tr id="RSAKeySize">
+            <td>
                 <strong>Key Size</strong> <font color=red>*</font><br>
                 Enter the size of your certificate key.
             </td>
-            <td><select name=keysize>
-                {for $i=512 to 4096 step 512}
-                    <option value={$i} {if $keysize eq $i}selected='selected'{/if}">{$i} bits</option>
-                {/for}
+            <td>
+                <select name=keysize>
+                    {for $i=512 to 4096 step 512}
+                        <option value={$i} {if $keysize eq $i}selected='selected'{/if}">{$i} bits</option>
+                    {/for}
                 </select>
             </td>
         </tr>
@@ -212,16 +238,6 @@
 
         <tr>
             <td width="35%">
-                <strong>Location of OpenSSL Executable <font color=red>*</font></strong><br>
-                Enter the location of your OpenSSL binary.  The default is usually ok.
-            </td>
-            <td>
-                <input type=text name=openssl_bin value="{$openssl_bin}" size=35>
-            </td>
-        </tr>
-
-        <tr>
-            <td width="35%">
                 <strong>Location of HTTP password file <font color=red>*</font></strong><br>
                 Enter the location of your PHPki user password file.  The default is usually ok.
             </td>
@@ -273,4 +289,6 @@
     <p>
     <center><input type=submit name=submit value=Submit></center></td>
     <input type=hidden name=stage value='validate'>
+    <input type=hidden name=openssl_bin value="{$openssl_bin}">
+    <input type=hidden name=overwrite value='yes'>
 </form>

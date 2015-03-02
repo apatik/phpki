@@ -58,6 +58,31 @@
         </tr>
 
         <tr>
+            <td>
+                Certificate Key Type
+            </td>
+            <td>
+                <select name="encryptionType" onchange={literal}"if (this.value=='EC'){setVisibility('curve',true); setVisibility('RSAKeySize',false);} else {setVisibility('curve',false); setVisibility('RSAKeySize',true);}"{/literal}>
+                    <option value="RSA" selected='selected'>RSA</option>
+                    <option value="EC">Elliptic Curve</option>
+                </select>
+            </td>
+        </tr>
+
+        <tr id="curve" style="visibility: hidden; display: none;">
+            <td>
+                Elliptic Curve to Use
+            </td>
+            <td>
+                <select name="ecCurve" >
+                    {foreach $curves as $curve}
+                        <option value="{$curve}" {if $ecCurve eq $curve}selected='selected'{/if}">{$curve}</option>
+                    {/foreach}
+                </select>
+            </td>
+        </tr>
+
+        <tr id="RSAKeySize">
             <td>Key Size<font color=red size=3>*</font> </td>
             <td>
                 <select name=keysize>

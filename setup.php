@@ -1,8 +1,7 @@
 <?php
-
 require_once('./include/std_include.php');
 
-$overwrite = isset($_GET['overwrite']) ? $_GET['overwrite'] : 'no';
+$overwrite = gpvar('overwrite');
 
 if (file_exists(STORE_DIR) && $overwrite !== 'yes'){
     printHeader('setup');
@@ -83,6 +82,8 @@ $getting_help  = gpvar('getting_help');
 $ca_prefix     = gpvar('ca_prefix');
 $header_title  = gpvar('header_title');
 $store_dir     = gpvar('store_dir');
+$ecCurve        = gpvar('ecCurve');
+$encryptionType = gpvar('encryptionType');
 
 # Unmodified copied for writing to the config files - htvar gets used directly
 # before displaying the main entry form to provide the security against injection
@@ -112,8 +113,20 @@ $S->assign('ca_prefix',$ca_prefix);
 $S->assign('header_title',$header_title);
 $S->assign('passwd_file',$passwd_file);
 $S->assign('store_dir',$store_dir);
+$S->assign('ecCurve', $ecCurve);
 
 if ($base_url && substr($base_url,-1) != '/') $base_url .= '/';
+
+# Make ECParam operations available before config.php is created
+if (isset($openssl_bin) && ($stage == 'setup_stage2' || $stage == 'validate')) {
+
+    #Make the OpenSSL Binary available temporarily to retrieve the list of available Elliptic Curves
+    $openssl_bin = htmlentities($_POST['openssl_bin']);
+
+    define('OPENSSL', $openssl_bin . ' ');
+    define('ECPARAM', OPENSSL . ' ecparam ');
+
+}
 
 switch ($stage) {
 case 'validate':
@@ -195,13 +208,14 @@ case 'write':
     if (! file_exists("$store_dir/CA/crl")) mkdir("$store_dir/CA/crl",$store_perms);
     if (! file_exists("$store_dir/CA/pfx")) mkdir("$store_dir/CA/pfx",$store_perms);
 
-
     #
     # Create the PHPki CA configuration.
     #
     print '<strong>Writing configuration files...</strong><br>';
     flush();
 
+    $curves = CAdb_get_curves();
+    $S->assign('curves',$curves);
     $config_txt = $S->fetch('config.php.tpl');
 
     #
@@ -287,7 +301,19 @@ EOS;
     print '<strong>Creating root certificate...</strong><br>';
     flush();
 
-    exec(REQ . " -x509 -config $tmp_cnf -extensions root_ext -newkey rsa:$keysize -keyout $config[cakey] -out $config[cacert_pem] -passout pass:'$config[ca_pwd]' -days $days 2>&1");
+    # Setup EC Parameter files for all curves right away to simplify things up later
+    if($curves) {
+        foreach ($curves as $curve) {
+            exec(ECPARAM . " -out " . $config["ca_ecparam_$curve"] . " -name $curve");
+        }
+    }
+
+    if ($encryptionType == 'RSA') {
+        exec(REQ . " -x509 -config $tmp_cnf -extensions root_ext -newkey rsa:$keysize -keyout $config[cakey] -out $config[cacert_pem] -passout pass:'$config[ca_pwd]' -days $days 2>&1");
+    } elseif ($encryptionType == 'EC') {
+        exec(OPENSSL . " genpkey -paramfile " . $config["ca_ecparam_$ecCurve"] . " -out $config[cakey] 2>&1");
+        exec(REQ . " -x509 -config $tmp_cnf -extensions root_ext -new -key $config[cakey] -out $config[cacert_pem] -passout pass:'$config[ca_pwd]' -days $days 2>&1");
+    }
 
     #
     # Generate the initial CRL.
@@ -313,7 +339,8 @@ EOS;
     printFooter();
     break;
 
-default:
+case "setup_stage2":
+    $curves         = CAdb_get_curves();
     if (! $country) $country = isset($config['country']) ? $config['country'] : null;
     if (! $province) $province = isset($config['province']) ? $config['province'] : null;
     if (! $locality) $locality = isset($config['locality']) ? $config['locality'] : null;
@@ -388,11 +415,19 @@ E-mail: <a href=mailto:someone@somewhere.com>someone@somewhere.com</a>&nbsp;&nbs
     $S->assign('header_title',htvar($header_title));
     $S->assign('passwd_file',htvar($passwd_file));
     $S->assign('store_dir',htvar($store_dir));
-    $S->display('setup_form.tpl');
+    $S->assign('ecCurve',htvar($ecCurve));
+    $S->assign('encryptionType',htvar($encryptionType));
+    $S->assign('curves',$curves);
+    $S->display('setupForm2.tpl');
     printFooter();
     break;
+        break;
+default:
+    if (! $openssl_bin) $openssl_bin = isset($config['openssl_bin']) ? $config['openssl_bin'] : '/usr/bin/openssl';
+    $S->assign('openssl_bin',htvar($openssl_bin));
+    printHeader();
+    $S->display('setupForm1.tpl');
+    printFooter();
+
+    break;
 }
-
-    function create_ca_cnf($email, $expiry) {
-    }
-

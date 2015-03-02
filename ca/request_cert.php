@@ -6,23 +6,26 @@ require_once('../include/std_include.php');
 $user_cnf = "$config[home_dir]/config/user-".strtr($PHPki_user,'/\\','|#').'.php';
 
 # Retrieve GET/POST values
-$form_stage   = gpvar('form_stage');
-$submit       = gpvar('submit');
+$form_stage     = gpvar('form_stage');
+$submit         = gpvar('submit');
 
-$country      = gpvar('country');
-$province     = gpvar('province');
-$locality     = gpvar('locality');
-$organization = gpvar('organization');
-$unit         = gpvar('unit');
-$common_name  = gpvar('common_name');
-$email        = gpvar('email');
-$passwd       = gpvar('passwd');
-$passwdv      = gpvar('passwdv');
-$expiry       = gpvar('expiry');
-$keysize      = gpvar('keysize');
-$cert_type    = gpvar('cert_type');
-$dns_names    = gpvar('dns_names');
-$ip_addr      = gpvar('ip_addr');
+$country        = gpvar('country');
+$province       = gpvar('province');
+$locality       = gpvar('locality');
+$organization   = gpvar('organization');
+$unit           = gpvar('unit');
+$common_name    = gpvar('common_name');
+$email          = gpvar('email');
+$passwd         = gpvar('passwd');
+$passwdv        = gpvar('passwdv');
+$expiry         = gpvar('expiry');
+$keysize        = gpvar('keysize');
+$cert_type      = gpvar('cert_type');
+$dns_names      = gpvar('dns_names');
+$ip_addr        = gpvar('ip_addr');
+$ecCurve        = gpvar('ecCurve');
+$encryptionType = gpvar('encryptionType');
+$curves         = CAdb_get_curves();
 
 $PHP_SELF     = basename(__FILE__);
 $S->assign('PHP_SELF', $PHP_SELF);
@@ -41,6 +44,10 @@ $S->assign('keysize',htvar($keysize));
 $S->assign('cert_type',htvar($cert_type));
 $S->assign('dns_names',htvar($dns_names));
 $S->assign('ip_addr',htvar($ip_addr));
+$S->assign('ecCurve',htvar($ecCurve));
+$S->assign('encryptionType',htvar($encryptionType));
+$S->assign('curves',$curves);
+
 
 switch ($form_stage) {
 
@@ -134,7 +141,7 @@ switch ($form_stage) {
     case 'final':
         if ($submit == "Yes!  Create and Download") {
             if (! $serial = CAdb_in($email,$common_name)) {
-                list($returnValue,$errorText) = CA_create_cert($cert_type,$country, $province, $locality, $organization, $unit, $common_name, $email, $expiry, $passwd, $keysize,$dns_names,$ip_addr);
+                list($returnValue,$errorText) = CA_create_cert($cert_type,$country, $province, $locality, $organization, $unit, $common_name, $email, $expiry, $passwd, $keysize,$dns_names,$ip_addr,$encryptionType,$ecCurve);
 
                 if (! $returnValue) {
                     $S->assign('errorText',$errorText);
