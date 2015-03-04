@@ -1,4 +1,4 @@
-About this fork
+About this Project
 ===============
 
 NOTICE:
@@ -125,7 +125,7 @@ config/config.php under your certificate store directory.
 
 You may add additional users and change passwords using your browser after
 you have successfully installed PHPki and created your phpkipasswd file with
-at least one user. Point your browser to http://www.domain.com/phpki/admin/.
+at least one user. Point your browser to http://www.example.com/phpki/admin/.
 
 External authentication methods cannot be managed through PHPki.
 
@@ -151,5 +151,3 @@ upgrading.
 CONTACT:
 Post all correspondence to the GitHub project page
 https://github.com/apatik/phpki
-
----END OF FILE---
