@@ -7,13 +7,33 @@ req_extensions		= req_ext
 prompt			    = no
 
 [ req_name ]
-C		     = {$config.country}
-ST		     = {$config.province}
-L		     = {$config.locality}
-O		     = {$config.organization}
-OU		     = {$config.unit}
-CN		     = {$config.common_name}
-emailAddress = {$config.contact}
+{if $config.country}
+C={$config.country}
+{/if}
+
+{if $config.province}
+ST={$config.province}
+{/if}
+
+{if $config.locality}
+L={config.$locality}
+{/if}
+
+{if $config.organization}
+O={config.$organization}
+{/if}
+
+{if $config.unit}
+OU={$config.unit}
+{/if}
+
+{if $config.common_name}
+CN={$config.common_name}
+{/if}
+
+{if $config.email}
+emailAddress={$config.email}
+{/if}
 
 [ req_ext ]
 basicConstraints = critical, CA:true
