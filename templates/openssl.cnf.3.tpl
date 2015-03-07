@@ -16,11 +16,11 @@ ST={$config.province}
 {/if}
 
 {if $config.locality}
-L={config.$locality}
+L={$config.locality}
 {/if}
 
 {if $config.organization}
-O={config.$organization}
+O={$config.organization}
 {/if}
 
 {if $config.unit}
