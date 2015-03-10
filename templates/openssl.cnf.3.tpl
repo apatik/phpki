@@ -31,8 +31,8 @@ OU={$config.unit}
 CN={$config.common_name}
 {/if}
 
-{if $config.email}
-emailAddress={$config.email}
+{if $config.contact}
+emailAddress={$config.contact}
 {/if}
 
 [ req_ext ]

@@ -40,7 +40,7 @@
             {/if}
 
             {$cert_usage}<br>
-            {if $cert_type eq 'server'}
+            {if $cert_type eq 'server' || $cert_type eq 'vSphere'}
             {$dns_names}<br>
             {$ip_addr}<br>
             {/if}

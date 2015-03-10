@@ -6,7 +6,8 @@
 			<option value="PKCS#12">PKCS#12 Bundle</option>
 			<option value="PEMCERT">PEM Certificate</option>
 			<option value="PEMKEY">PEM Key</option>
-			<option value="PEMBUNDLE">PEM Bundle</option>
+            <option value="PEMBUNDLE">PEM Bundle</option>
+            <option value="PKCS#1">RSA PEM Key</option>
 			<option value="PEMCABUNDLE">PEM Bundle w/Root</option>
 		</select>
 		<input type="submit" name="submit" value="Download">

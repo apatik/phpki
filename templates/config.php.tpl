@@ -88,11 +88,15 @@ $config['openssl_cnf']   = $config['home_dir'] . '/config/openssl.cnf';
 
 $PHPki_admins = Array(md5('pkiadmin'));
 
+if(!defined('OPENSSL')){
 define('OPENSSL',$config['openssl_bin'].' ');
+}
 define('X509', OPENSSL . ' x509 ');
 define('PKCS12', "RANDFILE='$config[random]' " . OPENSSL . ' pkcs12 ');
 define('CA', OPENSSL . ' ca ');
 define('REQ', OPENSSL . ' req ');
 define('CRL', OPENSSL . ' crl ');
+if(!defined('ECPARAM')){
 define('ECPARAM', OPENSSL . ' ecparam ');
+}
 define('EC', OPENSSL . ' ec ');

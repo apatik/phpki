@@ -95,10 +95,11 @@
 
         <tr>
             <td>Certificate Use:<font color=red size=3>*</font> </td>
-            <td><select name=cert_type onchange={literal}"if (this.value=='server'){setVisibility('testrow1',true); setVisibility('testrow2',true);} else {setVisibility('testrow1',false); setVisibility('testrow2',false);}"{/literal}>
+            <td><select name=cert_type onchange={literal}"if (this.value=='server' || this.value=='vSphere'){setVisibility('testrow1',true); setVisibility('testrow2',true);} else {setVisibility('testrow1',false); setVisibility('testrow2',false);}"{/literal}>
                     <option value="email" {if $cert_type eq 'email'}selected='selected'{/if}>E-mail, SSL Client</option>
                     <option value="email_signing" {if $cert_type eq 'email_signing'}selected='selected'{/if}>E-mail, SSL Client, Code Signing</option>
                     <option value="server" {if $cert_type eq 'server'}selected='selected'{/if}>SSL Server</option>
+                    <option value="vSphere" {if $cert_type eq 'vSphere'}selected='selected'{/if}>vSphere 5 Server</option>
                     <option value="vpn_client" {if $cert_type eq 'vpn_client'}selected='selected'{/if}).'>VPN Client Only</option>
                     <option value="vpn_server" {if $cert_type eq 'vpn_server'}selected='selected'{/if}>VPN Server Only</option>
                     <option value="vpn_client_server" {if $cert_type eq 'vpn_client_server'}selected='selected'{/if}>VPN Client, VPN Server</option>

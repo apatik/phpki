@@ -78,6 +78,11 @@ x509_extensions        = server_ext
 default_days           = 365
 policy                 = policy_supplied
 
+[ server_client_cert ]
+x509_extensions        = server_client_ext
+default_days           = 365
+policy                 = policy_supplied
+
 [ vpn_cert ]
 x509_extensions        = vpn_client_server_ext
 default_days           = 365
@@ -165,6 +170,21 @@ basicConstraints        = critical, CA:false
 keyUsage                = critical, digitalSignature, keyEncipherment
 nsCertType              = server
 extendedKeyUsage        = critical, serverAuth
+subjectKeyIdentifier    = hash
+authorityKeyIdentifier  = keyid:always, issuer:always
+subjectAltName          = {$server_altnames}
+issuerAltName           = issuer:copy
+crlDistributionPoints   = URI:{$config.base_url}{$config.crl_distrib}
+nsComment               = {$config.comment_srv}
+nsBaseUrl               = {$config.base_url}
+nsRevocationUrl         = {$config.base_url}{$config.revoke_url}{$serial}
+nsCaPolicyUrl           = {$config.base_url}{$config.policy_url}
+
+[ vSphere_ext ]
+basicConstraints        = critical, CA:false
+keyUsage                = digitalSignature, keyEncipherment, dataEncipherment
+nsCertType              = server, client
+extendedKeyUsage        = serverAuth, clientAuth
 subjectKeyIdentifier    = hash
 authorityKeyIdentifier  = keyid:always, issuer:always
 subjectAltName          = {$server_altnames}

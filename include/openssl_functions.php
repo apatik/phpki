@@ -417,11 +417,12 @@ function CA_create_cert($cert_type='email',$country,$province,$locality,$organiz
     # Get the next available serial number
     $serial = trim(implode('',file($config['serial'])));
 
-    $userkey   = $config['private_dir'].'/'.$serial.'-key.pem';
-    $userreq   = $config['req_dir'].'/'.$serial.'-req.pem';
-    $usercert  = $config['new_certs_dir'].'/'.$serial.'.pem';
-    $userder   = $config['cert_dir'].'/'.$serial.'.der';
-    $userpfx   = $config['pfx_dir'].'/'.$serial.'.pfx';
+    $userkey      = $config['private_dir'].'/'.$serial.'-key.pem';
+    $userreq      = $config['req_dir'].'/'.$serial.'-req.pem';
+    $usercert     = $config['new_certs_dir'].'/'.$serial.'.pem';
+    $userder      = $config['cert_dir'].'/'.$serial.'.der';
+    $userpfx      = $config['pfx_dir'].'/'.$serial.'.pfx';
+    $userpkcs1key = $config['private_dir'].'/'.$serial.'-RSAkey.pem';
 
     $expiry_days = round($expiry * 365.25, 0);
 
@@ -440,9 +441,11 @@ function CA_create_cert($cert_type='email',$country,$province,$locality,$organiz
     if ($encryptionType == 'RSA') {
         if ($passwd) {
             exec(REQ." -new -newkey rsa:$keysize -keyout '$userkey' -out '$userreq' -config '$cnf_file' -days '$expiry_days' -passout pass:$_passwd  2>&1", $cmd_output, $ret);
+            exec(OPENSSL . " rsa -in '$userkey' -passin pass:'$_passwd' -out '$userpkcs1key' -passout pass:'$_passwd' -aes256 2>&1", $cmd_output, $ret);
         }
         else {
             exec(REQ." -new -nodes -newkey rsa:$keysize -keyout '$userkey' -out '$userreq' -config '$cnf_file' -days '$expiry_days' 2>&1", $cmd_output, $ret);
+            exec(OPENSSL . " rsa -in '$userkey' -out '$userpkcs1key'  2>&1", $cmd_output, $ret);
         }
     }
     elseif ($encryptionType == 'EC'){

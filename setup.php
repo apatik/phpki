@@ -123,8 +123,12 @@ if (isset($openssl_bin) && ($stage == 'setup_stage2' || $stage == 'validate')) {
     #Make the OpenSSL Binary available temporarily to retrieve the list of available Elliptic Curves
     $openssl_bin = htmlentities($_POST['openssl_bin']);
 
-    define('OPENSSL', $openssl_bin . ' ');
-    define('ECPARAM', OPENSSL . ' ecparam ');
+    if(!defined('OPENSSL')) {
+        define('OPENSSL', $openssl_bin . ' ');
+    }
+    if(!defined('ECPARAM')) {
+        define('ECPARAM', OPENSSL . ' ecparam ');
+    }
 
 }
 

@@ -116,6 +116,8 @@ switch ($form_stage) {
                 break;
             case 'server': $cert_usage = 'SSL Server';
                 break;
+            case 'vSphere': $cert_usage = 'vSphere 5 Server';
+                break;
             case 'vpn_client': $cert_usage = 'VPN Client Only';
                 break;
             case 'vpn_server': $cert_usage = 'VPN Server Only';
@@ -156,6 +158,7 @@ switch ($form_stage) {
             }
 
             switch($cert_type) {
+                case 'vSphere':
                 case 'server':
                     upload(array("$config[private_dir]/$serial-key.pem","$config[new_certs_dir]/$serial.pem",$config['cacert_pem']), "$common_name ($email).pem",'application/pkix-cert');
                     break;

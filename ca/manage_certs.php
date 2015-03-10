@@ -96,6 +96,14 @@ case 'download':
         case 'PKCS#12':
             upload("$config[pfx_dir]/$serial.pfx", "$rec[common_name] ($rec[email]).p12", 'application/x-pkcs12');
             break;
+        case 'PKCS#1':
+            if (file_exists("$config[private_dir]/$serial-RSAkey.pem")){
+                upload("$config[private_dir]/$serial-RSAkey.pem", "$rec[common_name] ($rec[email])-RSAkey.pem",'application/octet-stream');
+            }
+            else {
+                print "<script language='javascript'>alert('RSA key not found! Elliptic Curve certificates do not have RSA keys.'); location.reload();</script>";
+            }
+            break;
         case 'PEMCERT':
             upload("$config[new_certs_dir]/$serial.pem", "$rec[common_name] ($rec[email]).pem",'application/pkix-cert');
             break;
