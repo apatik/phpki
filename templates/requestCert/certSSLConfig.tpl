@@ -78,8 +78,8 @@ x509_extensions        = server_ext
 default_days           = 365
 policy                 = policy_supplied
 
-[ server_client_cert ]
-x509_extensions        = server_client_ext
+[ vSphere_cert ]
+x509_extensions        = vSphere_ext
 default_days           = 365
 policy                 = policy_supplied
 
