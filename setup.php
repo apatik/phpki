@@ -364,7 +364,7 @@ E-mail: <a href=mailto:someone@somewhere.com>someone@somewhere.com</a>&nbsp;&nbs
 
     if (! $base_url) $base_url = isset($config['base_url']) ? $config['base_url'] : 'http://www.somewhere.com/phpki/';
 
-    if (! $crl_distrib) $crl_distrib = 'index.php?stage=dl_crl';
+    if (! $crl_distrib) $crl_distrib = 'crl.php';
     if (! $revoke_url) $revoke_url = 'ns_revoke_query.php?';
     if (! $policy_url) $policy_url = 'policy.html';
 

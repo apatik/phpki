@@ -28,7 +28,7 @@
 				to learn more about this.</td></tr>
 
 		<tr><td style="text-align: center; vertical-align: middle; font-weight: bold;">
-				<a href="{$PHP_SELF}?stage=dl_crl">Download the Certificate Revocation List</a></td>
+				<a href="crl.php">Download the Certificate Revocation List</a></td>
 			<td>This is the official list of revoked certificates.  Using this list with your e-mail or
 				browser application is optional.  Some applications will automagically reference this list. </td></tr>
 	</table>

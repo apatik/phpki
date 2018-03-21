@@ -31,7 +31,7 @@ PHPki was developed and tested on RedHat GNU/Linux systems. In theory,
 it should work on any modern LAMP stack, but only limited testing has been
 done. PHPki requires OpenSSL command line binaries be installed. It has been
 confirmed to work on both Apache w/ mod_php and Nginx w/ PHP-FPM. Both PHP 5.3
-(Shipped with RedHat 6) and PHP 5.5 have been confirmed to work. We avoid using
+(Shipped with RedHat 6) and PHP 7.1 have been confirmed to work. We avoid using
 any deprecated features of PHP, so it should work with new releases for the foreseeable
 future. PHPki also requires the Smarty PHP template engine, which can be installed via composer.
 
