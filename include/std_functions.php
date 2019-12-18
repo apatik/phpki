@@ -73,28 +73,28 @@ function isMoz() {
 # Returns TRUE if argument contains only alphabetic characters.
 #
 function is_alpha($v) {
-    return (eregi('[^A-Z]',$v) ? false : true) ;
+    return(preg_match('/[^A-Z]/i', $v) ? false : true) ;
 }
 
 #
 # Returns TRUE if argument contains only numeric characters.
 #
 function is_num($v) {
-    return (eregi('[^0-9]',$v) ? false : true) ;
+    return(preg_match('/[^0-9]/i', $v) ? false : true) ;
 }
 
 #
 # Returns TRUE if argument contains only alphanumeric characters.
 #
 function is_alnum($v) {
-    return (eregi('[^A-Z0-9]',$v) ? false : true) ;
+    return(preg_match('/[^A-Z0-9]/i', $v) ? false : true) ;
 }
 
 #
 # Returns TRUE if argument is in proper e-mail address format.
 #
 function is_email($v) {
-    return (eregi('^[^@ ]+\@[^@ ]+\.[A-Z]{2,4}$',$v) ? true : false);
+    return(preg_match('/^[^@ ]+\@[^@ ]+\.[A-Z]{2,4}$/i', $v) ? true : false) ;
 }
 
 #
@@ -121,6 +121,17 @@ function is_fqdn($FQDN) {
     // remove leading wildcard characters if exist
     $FQDN = preg_replace('/^\*\./','', $FQDN, 1);
     return (!empty($FQDN) && preg_match('/^(?=.{1,254}$)((?=[a-z0-9-]{1,63}\.)(xn--+)?[a-z0-9]+(-[a-z0-9]+)*\.)+(xn--+)?[a-z0-9]{2,63}$/i', $FQDN) > 0);
+}
+
+#
+# Checks regexp in every element of an array, returns TRUE as soon
+# as a match is found.
+#
+function eregi_array($regexp, $a) {
+    foreach($a as $e) {
+        if (preg_match("/${regexp}/i",$e)) return true;
+    }
+    return false;
 }
 
 #
